@@ -1,25 +1,20 @@
 pipeline {
-    agent {label 'OPENJDK-11'}
-    triggers {
-        pollSCM '30 17 * * *'
+    agent { label 'TASK' }
+    triggers { pollSCM('* * * * *')}
+    parameters {
+        choice(name: 'BRANCH', choices: ['master', 'task'], description: 'build choice')
     }
-    stages {
-        stage('pull from vcs') {
-         steps {
-            git url: 'https://github.com/Qtalha/shopizer.git',
-            branch: 'release' 
-           }
-        }
-        stage("build") {
+    stages{
+        stage('vcs'){
             steps {
+                git branch: "${params.BRANCH}",
+                    url:'https://github.com/GOWTHI143/shopizer.git'
+            }
+        }
+        stage('build') {
+            steps{
                 sh 'mvn package'
-            }
-        }
-        stage("merge") {
-            steps {
-                sh 'git checkout release'
-                sh 'git merge --no-ff origin/develop'
-            }
+                }
         }
     }
 }
