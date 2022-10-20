@@ -9,7 +9,7 @@ pipeline {
         stage('vcs'){
             steps {
                 git branch: "${params.BRANCH}",
-                    url:'https://github.com/GOWTHI143/shopizer.git'
+                    url:'https://github.com/gowthamlearning/shopizer.git'
             }
         }
         stage('build') {
