@@ -14,7 +14,7 @@ pipeline {
         }
         stage('build') {
             steps{
-                sh mvn "${params.MVN_GOAL}"
+                sh "${params.MVN_GOAL}"
                 }
         }
     }
