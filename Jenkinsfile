@@ -15,7 +15,17 @@ pipeline {
         stage('build') {
             steps{
                 sh "${params.MVN_GOAL}"
-                }
+            }    
+        }
+        stage('archive'){
+            steps{
+                archiveArtifacts artifacts: '**/target/*.jar'
+            }
+        }
+        stage('junit'){
+            steps{
+                junit'**/surefire-reports/*.xml'
+            }
         }
     }
 }
