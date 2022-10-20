@@ -16,5 +16,15 @@ pipeline {
                 sh 'mvn package'
                 }
         }
+        stage('archive'){
+            steps{
+                archiveArtifacts artifacts: '**/target/*.jar'
+            }
+        }
+        stage('junit-results') {
+            steps{
+                junit '**/surefire-reports/*.xml'
+            }
+        }
     }
 }
