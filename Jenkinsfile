@@ -1,8 +1,9 @@
 pipeline {
-    agent any
+    agent { label 'TASK' }
     triggers { pollSCM('* * * * *')}
     parameters {
-        choice(name: 'BRANCH', choices: ['master', 'task'], description: 'build choice')
+        choice(name: 'BRANCH', choices: ['master', 'task', 'final'], description: 'build choice')
+        string(name: 'MVN_GOAL', defaultValue: 'mvn package', description: 'maven')
     }
     stages{
         stage('vcs'){
@@ -13,18 +14,8 @@ pipeline {
         }
         stage('build') {
             steps{
-                sh 'mvn package'
+                sh mvn "${params.MVN_GOAL}"
                 }
-        }
-        stage('archive'){
-            steps{
-                archiveArtifacts artifacts: '**/target/*.jar'
-            }
-        }
-        stage('junit-results') {
-            steps{
-                junit '**/surefire-reports/*.xml'
-            }
         }
     }
 }
