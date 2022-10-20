@@ -1,5 +1,5 @@
 pipeline {
-    agent { label 'TASK' }
+    agent any
     triggers { pollSCM('* * * * *')}
     parameters {
         choice(name: 'BRANCH', choices: ['master', 'task'], description: 'build choice')
